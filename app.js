@@ -8,8 +8,10 @@ const app = express();
 
 const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
+const MongoDBStore = require('connect-mongodb-session')(session);
 
-//const FileStore = require('session-file-store')(session);
+
+const FileStore = require('session-file-store')(session);
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -28,18 +30,32 @@ const sessionRouter = require('./routes/session/index');
 // }));
 
 // session DB 저장 방식 - session 테이블이 자동 생성되고  세션이 passport의해 저장 된다.
+// app.use(session({
+//   secret: '12312dajfj23rj2po4$#%@#',
+//   resave: false,
+//   saveUninitialized: true,
+//   store: new MySQLStore({
+//     host: 'localhost',
+//     port: 3306,
+//     user: 'opentutorials',
+//     password: '1111',
+//     database: 'opentutorials'
+//   })
+// }));
+
+
+//몽고 MongoDBStore  설정
 app.use(session({
   secret: '12312dajfj23rj2po4$#%@#',
   resave: false,
   saveUninitialized: true,
-  store: new MySQLStore({
-    host: 'localhost',
-    port: 3306,
-    user: 'opentutorials',
-    password: '1111',
-    database: 'opentutorials'
+  store: new MongoDBStore({
+    uri: 'mongodb://localhost:27017/take-ndoejs',
+    collection: 'sessionStore'
   })
 }));
+
+
 
 
 
