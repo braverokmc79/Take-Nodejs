@@ -29,7 +29,19 @@ router.get("/products", function (req, res, next) {
 });
 
 
+router.get("/cart/:id", function (req, res, next) {
+    const id = req.params.id;
+    let cart = {};
+    if (req.cookies.cart) {
+        cart = req.cookies.cart;
+    }
 
+    if (!cart[id]) cart[id] = 0;
+    cart[id] = parseInt(cart[id]) + 1;
+
+    res.cookie('cart', cart);
+    res.render("cookies/cart", { cart: cart });
+})
 
 
 
