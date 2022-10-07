@@ -38,6 +38,11 @@ router.post('/auth/login', function (req, res, next) {
     }
 })
 
+router.get("/auth/logout", function (req, res, next) {
+    delete req.session.displayName;
+    res.redirect("/session/welcome");
+});
+
 router.get('/welcome', function (req, res, next) {
     res.render("session/welcome", { session: req.session });
 });
