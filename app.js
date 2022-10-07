@@ -26,7 +26,7 @@ nunjucks.configure('views', { // views폴더가 넌적스파일의 위치가 됨
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(cookieParser('3213e1da4523fa'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);

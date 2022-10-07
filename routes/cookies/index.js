@@ -4,10 +4,10 @@ var router = express.Router();
 
 router.get('/count', function (req, res, next) {
     let count = 0;
-    if (req.cookies.count) count = Number(req.cookies.count);
+    if (req.signedCookies.count) count = Number(req.signedCookies.count);
 
     count += 1;
-    res.cookie("count", count);
+    res.cookie("count", count, { signed: true });
     res.render('cookies/count', { count: count });
 });
 
@@ -33,7 +33,7 @@ router.get("/products", function (req, res, next) {
 
 
 router.get("/cart", function (req, res, next) {
-    const cart = req.cookies.cart;
+    const cart = req.signedCookies.cart;
     let output = '';
     if (!cart) {
         res.send('Empty!');
@@ -52,14 +52,14 @@ router.get("/cart", function (req, res, next) {
 router.get("/cart/:id", function (req, res, next) {
     const id = req.params.id;
     let cart = {};
-    if (req.cookies.cart) {
-        cart = req.cookies.cart;
+    if (req.signedCookies.cart) {
+        cart = req.signedCookies.cart;
     }
 
     if (!cart[id]) cart[id] = 0;
     cart[id] = parseInt(cart[id]) + 1;
 
-    res.cookie('cart', cart);
+    res.cookie('cart', cart, { signed: true });
     res.redirect('/cookies/cart');
 })
 
