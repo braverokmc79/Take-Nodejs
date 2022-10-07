@@ -18,6 +18,8 @@ app.use(session({
   resave: false,
   saveUninitialized: true
 }))
+app.use(express.json());
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

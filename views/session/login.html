@@ -2,8 +2,11 @@
 
 {% block content %}
 
+<h1>Login</h1>
+<span style="color:red">{{error}}</span>
+
 <form action="/session/auth/login" method="post">
-    <p><input type="text" name="id" placeholder="username"></p>
+    <p><input type="text" name="username" placeholder="username"></p>
     <p><input type="password" name="password" placeholder="password"></p>
     <p>
         <input type="submit">
