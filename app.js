@@ -4,21 +4,28 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const nunjucks = require('nunjucks');
+const app = express();
+
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
+
+
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const cookieRouter = require('./routes/cookies/index');
 const sessionRouter = require('./routes/session/index');
 
-const app = express();
 
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'secret key',	// 암호화
   resave: false,
-  saveUninitialized: true
-}))
-app.use(express.json());
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+  },
+  store: new FileStore() // 세션 객체에 세션스토어를 적용
+}));
 
 
 // view engine setup
