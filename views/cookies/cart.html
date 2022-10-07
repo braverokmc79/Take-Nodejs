@@ -2,9 +2,11 @@
 
 
 {% block content %}
+<h1>장바구니</h1>
 
+{{output | safe}}
 
-{{cart | dump(2)}}
-
+<br>
+<a href="/cookies/products">Products List</a>
 
 {% endblock %}

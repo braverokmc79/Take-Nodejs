@@ -12,20 +12,40 @@ router.get('/count', function (req, res, next) {
 });
 
 
-const products = [
-    { id: 1, title: 'The history of web' },
-    { id: 2, title: 'The next web' }
-]
+const products = {
+    1: { title: 'The history of web' },
+    2: { title: 'The next web' }
+}
 
 router.get("/products", function (req, res, next) {
     let output = '<ul>';
     for (let item in products) {
         output += `<li>
-            <a href="/cookies/products/${products[item].id}">${products[item].title}</a>
+            <a href="/cookies/cart/${item}">${products[item].title}</a>
         </li>`;
     }
     output += '</ul>';
     res.render('cookies/proudcts', { output: output, products: products });
+});
+
+
+
+
+
+router.get("/cart", function (req, res, next) {
+    const cart = req.cookies.cart;
+    let output = '';
+    if (!cart) {
+        res.send('Empty!');
+    } else {
+        output = '<ul>';
+        for (let id in cart) {
+            output += `<li>${products[id].title}(${cart[id]})</li>`;
+        }
+        output += "</ul>";
+    }
+
+    res.render("cookies/cart", { output: output });
 });
 
 
@@ -40,7 +60,7 @@ router.get("/cart/:id", function (req, res, next) {
     cart[id] = parseInt(cart[id]) + 1;
 
     res.cookie('cart', cart);
-    res.render("cookies/cart", { cart: cart });
+    res.redirect('/cookies/cart');
 })
 
 
