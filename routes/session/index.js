@@ -32,7 +32,9 @@ router.post('/auth/login', function (req, res, next) {
     if (uname === user.username && pwd === user.password) {
         //세션 저장
         req.session.displayName = user.displayName;
-        res.redirect("/session/welcome");
+        req.session.save(function () {
+            res.redirect("/session/welcome");
+        })
     } else {
         res.render("session/login", { error: "아이디 또는 비밀번호가 일치하지 않습니다." });
     }
@@ -40,7 +42,10 @@ router.post('/auth/login', function (req, res, next) {
 
 router.get("/auth/logout", function (req, res, next) {
     delete req.session.displayName;
-    res.redirect("/session/welcome");
+    req.session.save(function () {
+        res.redirect("/session/welcome");
+    })
+
 });
 
 router.get('/welcome', function (req, res, next) {

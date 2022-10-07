@@ -7,9 +7,9 @@ const nunjucks = require('nunjucks');
 const app = express();
 
 const session = require('express-session');
-const FileStore = require('session-file-store')(session);
+const MySQLStore = require('express-mysql-session')(session);
 
-
+//const FileStore = require('session-file-store')(session);
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -17,15 +17,30 @@ const cookieRouter = require('./routes/cookies/index');
 const sessionRouter = require('./routes/session/index');
 
 
+// app.use(session({
+//   secret: 'secret key',	// 암호화
+//   resave: false,
+//   saveUninitialized: true,
+//   cookie: {
+//     httpOnly: true,
+//   },
+//   //store: new FileStore() // 세션 객체에 세션스토어를 적용
+// }));
+
+// session DB 저장 방식 - session 테이블이 자동 생성되고  세션이 passport의해 저장 된다.
 app.use(session({
-  secret: 'secret key',	// 암호화
+  secret: '12312dajfj23rj2po4$#%@#',
   resave: false,
   saveUninitialized: true,
-  cookie: {
-    httpOnly: true,
-  },
-  store: new FileStore() // 세션 객체에 세션스토어를 적용
+  store: new MySQLStore({
+    host: 'localhost',
+    port: 3306,
+    user: 'opentutorials',
+    password: '1111',
+    database: 'opentutorials'
+  })
 }));
+
 
 
 // view engine setup
