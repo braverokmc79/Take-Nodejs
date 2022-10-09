@@ -19,16 +19,19 @@ const cookieRouter = require('./routes/cookies/index');
 const sessionRouter = require('./routes/session/index');
 
 
-// app.use(session({
-//   secret: 'secret key',	// 암호화
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {
-//     httpOnly: true,
-//   },
-//   //store: new FileStore() // 세션 객체에 세션스토어를 적용
-// }));
+//1. FileStore 설정
+app.use(session({
+  secret: 'secret key',	// 암호화
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true,
+  },
+  store: new FileStore() // 세션 객체에 세션스토어를 적용
+}));
 
+
+//2. MySQLStore 설정
 // session DB 저장 방식 - session 테이블이 자동 생성되고  세션이 passport의해 저장 된다.
 // app.use(session({
 //   secret: '12312dajfj23rj2po4$#%@#',
@@ -44,16 +47,16 @@ const sessionRouter = require('./routes/session/index');
 // }));
 
 
-//몽고 MongoDBStore  설정
-app.use(session({
-  secret: '12312dajfj23rj2po4$#%@#',
-  resave: false,
-  saveUninitialized: true,
-  store: new MongoDBStore({
-    uri: 'mongodb://localhost:27017/take-ndoejs',
-    collection: 'sessionStore'
-  })
-}));
+//3. 몽고 MongoDBStore  설정
+// app.use(session({
+//   secret: '12312dajfj23rj2po4$#%@#',
+//   resave: false,
+//   saveUninitialized: true,
+//   store: new MongoDBStore({
+//     uri: 'mongodb://localhost:27017/take-ndoejs',
+//     collection: 'sessionStore'
+//   })
+// }));
 
 
 

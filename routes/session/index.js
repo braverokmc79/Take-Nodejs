@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const md5 = require('md5');
 
 router.get('/count', function (req, res, next) {
     if (req.session.count) {
@@ -23,13 +24,16 @@ router.get('/auth/login', function (req, res, next) {
 router.post('/auth/login', function (req, res, next) {
     let user = {
         username: 'egoing',
-        password: '1111',
+        password: 'b59c67bf196a4758191e42f76670ceba',
         displayName: 'Egoing'
     }
     const uname = req.body.username;
     const pwd = req.body.password;
+    //password :1111
+    console.log("req.body : ", req.body);
 
-    if (uname === user.username && pwd === user.password) {
+
+    if (uname === user.username && md5(pwd) === user.password) {
         //세션 저장
         req.session.displayName = user.displayName;
         req.session.save(function () {

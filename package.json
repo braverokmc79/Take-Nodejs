@@ -17,6 +17,7 @@
     "express-session": "^1.17.3",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
+    "md5": "^2.3.0",
     "mongoose": "^6.6.5",
     "morgan": "~1.9.1",
     "nunjucks": "^3.2.3",
