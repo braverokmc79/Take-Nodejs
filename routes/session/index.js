@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const md5 = require('md5');
+const sha256 = require('sha256');
+
 
 router.get('/count', function (req, res, next) {
     if (req.session.count) {
@@ -22,20 +24,30 @@ router.get('/auth/login', function (req, res, next) {
 
 
 router.post('/auth/login', function (req, res, next) {
-    let user = {
-        username: 'egoing',
-        password: 'b59c67bf196a4758191e42f76670ceba',
-        displayName: 'Egoing'
-    }
+    let user = [
+        {
+            username: 'egoing',
+            password: 'a6c44b2d30bf9a5893c099bacb94606ca119b38e1454614dc1c069e8ffa958e1',
+            displayName: 'Egoing',
+            salt: "@#@#$SDA%#a213"
+        },
+        {
+            username: 'test1',
+            password: '079ec662a574122c1b10d91ab3be9ae4d9cc56e8bae1deadd3c7ee105195f027',
+            displayName: '홍길동',
+            salt: "#@fsa3%#@f5232"
+        },
+    ]
+
     const uname = req.body.username;
     const pwd = req.body.password;
     //password :1111
-    console.log("req.body : ", req.body);
+    console.log("req.body : ", sha256(pwd + user[1].salt));
 
 
-    if (uname === user.username && md5(pwd) === user.password) {
+    if (uname === user[0].username && sha256(pwd + user[0].salt) === user[0].password) {
         //세션 저장
-        req.session.displayName = user.displayName;
+        req.session.displayName = user[0].displayName;
         req.session.save(function () {
             res.redirect("/session/welcome");
         })
