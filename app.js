@@ -15,10 +15,6 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const FileStore = require('session-file-store')(session);
 
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const cookieRouter = require('./routes/cookies/index');
-const sessionRouter = require('./routes/session/index');
 
 
 //1. FileStore 설정
@@ -62,7 +58,7 @@ app.use(session({
 
 
 app.use(flash());
-
+const passport = require("./lib/passport")(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -80,12 +76,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser('3213e1da4523fa'));
 app.use(express.static(path.join(__dirname, 'public')));
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const cookieRouter = require('./routes/cookies/index');
+const sessionRouter = require('./routes/session/index');
+const passportRouter = require('./routes/passport/index')(passport);
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/cookies', cookieRouter);
 app.use('/session', sessionRouter);
-
+app.use('/passport', passportRouter);
 
 
 
