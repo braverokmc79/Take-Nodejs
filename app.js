@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const nunjucks = require('nunjucks');
 const flash = require('connect-flash');
+const dotenv = require("dotenv");
 const app = express();
 
 
@@ -15,6 +16,7 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const FileStore = require('session-file-store')(session);
 
+dotenv.config();
 
 
 //1. FileStore 설정

@@ -3,7 +3,6 @@ const router = express.Router();
 const db = require("../../lib/db");
 global.crypto = require('crypto')
 
-
 module.exports = function (passport) {
 
     router.get("/welcome", (req, res) => {
@@ -30,6 +29,23 @@ module.exports = function (passport) {
         failureFlash: true,
         successFlash: true
     }));
+
+
+
+
+
+    //1.페이스북그인 처리 - 로그인 버튼 클릭시
+    router.get('/login/federated/facebook', passport.authenticate('facebook', { scope: 'email' }));
+
+
+    //2.페이스북그인  처리 - 콜백 반환
+    router.get('/oauth2/redirect/facebook', passport.authenticate('facebook', {
+        successRedirect: '/passport/welcome',
+        failureRedirect: '/passport/login',
+        failureFlash: true,
+        successFlash: true
+    }));
+
 
 
     //로그 아웃 처리
@@ -99,6 +115,7 @@ module.exports = function (passport) {
 
         });
     });
+
 
 
     return router;

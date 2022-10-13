@@ -8,6 +8,9 @@ var app = require('../app');
 var debug = require('debug')('take-nodejs:server');
 var http = require('http');
 
+const https = require('https');
+const fs = require('fs');
+
 /**
  * Get port from environment and store in Express.
  */
@@ -18,16 +21,30 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
-
-var server = http.createServer(app);
+//var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+var server = https.createServer(
+  {
+    // key: fs.readFileSync(__dirname + '/key.pem', 'utf-8'),
+    // cert: fs.readFileSync(__dirname + '/cert.pem', 'utf-8'),
+    key: fs.readFileSync('C:/https/localhost-key.pem', 'utf-8'),
+    cert: fs.readFileSync('C:/https/localhost.pem', 'utf-8'),
+  }, app.use('/', (req, res) => {
+    //res.send('Congrats! You made https server now :)');
+  })
+).listen(port);
+
+//server.listen(port);
+
+
 server.on('error', onError);
 server.on('listening', onListening);
+
+
 
 /**
  * Normalize a port into a number, string, or false.
@@ -67,11 +84,9 @@ function onError(error) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
       process.exit(1);
-      break;
     case 'EADDRINUSE':
       console.error(bind + ' is already in use');
       process.exit(1);
-      break;
     default:
       throw error;
   }
